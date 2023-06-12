@@ -4,6 +4,7 @@ import LottieView from 'lottie-react-native';
 import React, { useState } from 'react';
 import { FlatList } from 'react-native';
 
+import Input from './components/Input';
 import Header from './components/Header';
 import Empty from './components/Empty';
 import Task from './components/Task';
@@ -17,7 +18,9 @@ export default function App() {
       ListEmptyComponent={() => <Empty/>}
       renderItem={() => <Task/>}
       />
-      <Task/>
+      <View>
+        <Input/>
+      </View>
       <StatusBar style="light" />
     </View>
   );
