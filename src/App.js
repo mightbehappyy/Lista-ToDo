@@ -2,7 +2,7 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import LottieView from 'lottie-react-native';
 import React, { useState } from 'react';
-import { FlatList } from 'react-native';
+import { FlatList, KeyboardAvoidingView, Platform } from 'react-native';
 
 import Input from './components/Input';
 import Header from './components/Header';
@@ -11,18 +11,34 @@ import Task from './components/Task';
 
 export default function App() {
   const [data, setData] = useState([]);
+  const submitHandler = (value) =>{
+  setData((prevTask) => {
+    return[
+      {
+        value: value,
+        key: Math.random().toString(),
+      },
+      ...prevTask
+    ]
+  })
+}
+
   return (
-    <View style={styles.container}>
+    <KeyboardAvoidingView
+    style={styles.container}
+    behavior={Platform.OS === 'ios' ?  'height' : -500}
+  >
+      <Header/>
       <FlatList data={data} keyExtractor={(item) =>item.key}
-      ListHeaderComponent={() => <Header/>}
       ListEmptyComponent={() => <Empty/>}
-      renderItem={() => <Task/>}
+      renderItem={({item}) => <Task item={item}/>}
       />
+
       <View>
-        <Input/>
+        <Input submitHandler={submitHandler}/>
       </View>
       <StatusBar style="light" />
-    </View>
+    </KeyboardAvoidingView>
   );
 }
 
@@ -31,6 +47,13 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#121212',
     alignItems: 'center',
-    paddingVertical: 60,
+    paddingVertical: 30,
   },
+  inputContainer:{
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    
+
+  }
 });

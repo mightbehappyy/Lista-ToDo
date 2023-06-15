@@ -3,11 +3,13 @@ import {View, Text, StyleSheet,  TouchableOpacity, Image } from 'react-native';
 
 
 export default function Task({item, deleteItem}){
-    const [check, setCheck] = useState([])
+    const [check, setCheck] = useState(false)
 
     const handleCheck = () => {
         setCheck(!check);
     }
+
+    
     return (
         <View style={[styles.taskContainer, {backgroundColor: check === false ? "#798DC5" : "green"}
         ]}
@@ -21,12 +23,14 @@ export default function Task({item, deleteItem}){
                 </TouchableOpacity>
             )  
            }
+
+           
             <View>
                 <Text style={styles.taskTitle}>
-                    {item.value} text
+                    {item.value}
                 </Text>
             </View>
-            <TouchableOpacity onPress={() => deleteItem(item.key)}>
+          <TouchableOpacity onPress={() => deleteItem(item.key)}>
                 <Image  style={styles.iconImage} source={require("../../assets/delete.png")}/>
             </TouchableOpacity>
         </View>
@@ -35,7 +39,7 @@ export default function Task({item, deleteItem}){
 
 const styles = StyleSheet.create({
     taskContainer: {
-        marginTop: 20,
+        marginVertical: 10,
         borderWidth: 1,
         flexDirection: "row",
         paddingVertical: 20,
@@ -53,8 +57,8 @@ const styles = StyleSheet.create({
     taskTitle:{
         color: "white",
         fontSize: 15,
-        minWidth:220,
-        maxWidth:220,
+        minWidth:250,
+        maxWidth:250,
         paddingHorizontal: 15,
 
     },
