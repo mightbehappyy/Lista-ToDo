@@ -3,7 +3,7 @@ import {View, Text, StyleSheet, Keyboard } from 'react-native';
 import { TextInput } from 'react-native';
 import { TouchableOpacity } from 'react-native';
 
-export default function Input({submitHandler, saveData}){
+export default function Input({submitHandler}){
     const [value, setValue] = useState("");
     const [showWarning, setShowWarning] = useState(false);
 
@@ -25,9 +25,9 @@ export default function Input({submitHandler, saveData}){
         setValue('');
         Keyboard.dismiss();
       };
-      const handlePress = async () => {
+      const handlePress = () => {
         handleAddHabit();
-        await saveData();
+
       };
       
     return (

@@ -1,6 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
-import LottieView from 'lottie-react-native';
 import React, { useEffect, useState } from 'react';
 import { FlatList, KeyboardAvoidingView, Platform } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -13,45 +12,33 @@ import Task from './components/Task';
 
 export default function App() {
   const [data, setData] = useState([]);
-  const [counter, setCounter] = useState(1);
-
   React.useEffect(() => {
     getData();
   }, []);
 
-  const submitHandler = (value) => {
-    setData((prevTask) => [
-      {
-        value: value,
-        key: uuidv4(),
-      },
-      ...prevTask,
-    ]);
-    setCounter((prevCounter) => prevCounter + 1);
-  };
+  const createData = async (value) => {
+  try {
+    const newItem = {
+      value: value,
+      key: uuidv4(),
+      check: false,
+    };
+    await AsyncStorage.setItem('appData', JSON.stringify([newItem, ...data]));
+    setData((prevTask) => [newItem, ...prevTask]);
+    
+  } catch (error) {
+    console.log(error);
+  }
+};
 
-  const deleteItem = (key) => {
-    deleteData(key);
-  };
-
-  const saveData = async () => {
-    try {
-      await AsyncStorage.setItem('appData', JSON.stringify(data));
-      console.log('Data saved successfully');
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  
   const getData = async () => {
     try {
       const info = await AsyncStorage.getItem('appData');
       let parsedData = [];
       if (info) {
         parsedData = JSON.parse(info).filter(item => item.key && item.value);
+        setData(parsedData);
       }
-      setData(parsedData);
-      console.log('Data retrieved successfully:', parsedData);
     } catch (error) {
       console.log(error);
     }
@@ -65,15 +52,27 @@ export default function App() {
         parsedData = JSON.parse(info).filter(item => item.key !== key);
         await AsyncStorage.setItem('appData', JSON.stringify(parsedData));
         setData(parsedData);
-        console.log('Data deleted successfully');
       }
     } catch (error) {
       console.log(error);
     }
   };
-  
-  
-  
+
+  const updateData = async (key, check) => {
+    try {
+      const updatedData = data.map((item) => {
+        if (item.key === key) {
+          return { ...item, check };
+        }
+        return item;
+      });
+      await AsyncStorage.setItem('appData', JSON.stringify(updatedData));
+      setData(updatedData);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   
 
   return (
@@ -86,11 +85,11 @@ export default function App() {
         data={data}
         keyExtractor={(item) => item.key}
         ListEmptyComponent={() => <Empty />}
-        renderItem={({ item }) => <Task item={item} deleteItem={deleteItem} />}
+        renderItem={({ item }) => <Task item={item} deleteItem={deleteData} updateData={updateData} />}
       />
 
       <View>
-        <Input submitHandler={submitHandler} saveData={saveData} />
+        <Input submitHandler={createData} />
       </View>
       <StatusBar style="light" />
     </KeyboardAvoidingView>
