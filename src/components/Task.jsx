@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import {View, Text, StyleSheet,  TouchableOpacity, Image } from 'react-native';
+import {View, Text, StyleSheet,  TouchableOpacity, Image, Dimensions } from 'react-native';
 
 
 export default function Task({item, deleteItem}){
@@ -8,6 +8,12 @@ export default function Task({item, deleteItem}){
     const handleCheck = () => {
         setCheck(!check);
     }
+    const windowWidth = Dimensions.get('window').width;
+    const containerMaxWidthPercentage = 0.9;
+    const containerMinWidthPercentage = 0.9;
+    const containerMaxWidth = windowWidth * containerMaxWidthPercentage;
+    const containerMinWidth = windowWidth * containerMinWidthPercentage;
+
 
     
     return (

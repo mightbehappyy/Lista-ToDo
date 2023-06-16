@@ -3,7 +3,7 @@ import {View, Text, StyleSheet, Keyboard } from 'react-native';
 import { TextInput } from 'react-native';
 import { TouchableOpacity } from 'react-native';
 
-export default function Input({submitHandler}){
+export default function Input({submitHandler, saveData}){
     const [value, setValue] = useState("");
     const [showWarning, setShowWarning] = useState(false);
 
@@ -25,6 +25,11 @@ export default function Input({submitHandler}){
         setValue('');
         Keyboard.dismiss();
       };
+      const handlePress = async () => {
+        handleAddHabit();
+        await saveData();
+      };
+      
     return (
            <View style={styles.container}>
                 <TextInput
@@ -37,7 +42,7 @@ export default function Input({submitHandler}){
                 {
                 showWarning && <Text style={styles.warning}>O campo está vazio</Text>
             }
-                <TouchableOpacity onPress={handleAddHabit} style={styles.button}>
+                <TouchableOpacity onPress={handlePress}  style={styles.button}>
                     <Text style={styles.buttonText}>Adicionar</Text>
 
                 </TouchableOpacity>
