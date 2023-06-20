@@ -3,7 +3,7 @@ import {View, Text, StyleSheet, Keyboard } from 'react-native';
 import { TextInput } from 'react-native';
 import { TouchableOpacity } from 'react-native';
 
-export default function Input({submitHandler}){
+export default function Input({submitHandler, mode}){
     const [value, setValue] = useState("");
     const [showWarning, setShowWarning] = useState(false);
 
@@ -34,15 +34,17 @@ export default function Input({submitHandler}){
            <View style={styles.container}>
                 <TextInput
                     placeholder='Adicione sua task'
-                    placeholderTextColor="#bbbb"
+                    placeholderTextColor={mode? "white": "black"}
                     value={value}
                     onChangeText={onChangeText}
                     style={styles.input}
+                    borderColor = { mode? "#034efc": "#1DA1F2"}
+                    color = {mode? "white": "black"}
                 />
                 {
                 showWarning && <Text style={styles.warning}>O campo está vazio</Text>
             }
-                <TouchableOpacity onPress={handlePress}  style={styles.button}>
+                <TouchableOpacity onPress={handlePress} style={[styles.button, {backgroundColor: mode?  "#007AFF": "#1DA1F2"}]}>
                     <Text style={styles.buttonText}>Adicionar</Text>
 
                 </TouchableOpacity>
@@ -56,9 +58,8 @@ const styles = StyleSheet.create({
     },
     input:{
         width:200,
-        color: "white",
+        color: "black",
         borderWidth: 1,
-        borderColor: "#034efc",
         paddingVertical: 8,
         paddingHorizontal: 15, 
         borderRadius: 12,
@@ -67,8 +68,6 @@ const styles = StyleSheet.create({
         textAlign:"center"
     },
     button:{
-        borderWidth: 1,
-        borderColor: "bbb",
         borderRadius: 25,
         height: 50,
         width: 150,

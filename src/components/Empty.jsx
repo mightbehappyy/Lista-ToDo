@@ -1,10 +1,10 @@
 import React from 'react';
 import {View, Text, StyleSheet } from 'react-native';
 
-export default function Empty(){
+export default function Empty({mode}){
     return (
         <View>
-            <Text style={styles.title}>Sua lista está vazia!</Text>
+            <Text style={[styles.title, {color: mode? "white": "#1DA1F2"}]}>Sua lista está vazia!</Text>
         </View>
     )
 }

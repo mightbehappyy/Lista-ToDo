@@ -3,7 +3,7 @@
 
 
     export default function Task({item, deleteItem, updateData}){
-        const [check, setCheck] = useState(true)
+        const [check, setCheck] = useState()
 
         useEffect(() => {
             if (item.check !== undefined) {
@@ -18,7 +18,7 @@
         }
         
         return (
-            <View style={[styles.taskContainer, {backgroundColor: check === false ? "#798DC5" : "green"}
+            <View style={[styles.taskContainer, {backgroundColor: check === false ? "grey" : "#007AFF"}
             ]}
                 >
             {
@@ -48,7 +48,6 @@
     const styles = StyleSheet.create({
         taskContainer: {
             marginVertical: 10,
-            borderWidth: 1,
             flexDirection: "row",
             paddingVertical: 20,
             justifyContent: "center",

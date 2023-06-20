@@ -1,9 +1,10 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { FlatList, KeyboardAvoidingView, Platform } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { v4 as uuidv4 } from 'uuid';
+
 
 import Input from './components/Input';
 import Header from './components/Header';
@@ -11,7 +12,9 @@ import Empty from './components/Empty';
 import Task from './components/Task';
 
 export default function App() {
+  const [theme, setTheme] = useState(true);
   const [data, setData] = useState([]);
+  
   React.useEffect(() => {
     getData();
   }, []);
@@ -72,26 +75,28 @@ export default function App() {
       console.log(error);
     }
   };
-
+  const turnOnOff = (mode) => {
+    setTheme(mode)
+  }
   
 
   return (
     <KeyboardAvoidingView
-      style={styles.container}
-      behavior={Platform.OS === 'ios' ? 'height' : -500}
+      style={[styles.container, {backgroundColor: theme === true ? "#131617": "#F5F5F5" }]}
+      behavior={Platform.OS === 'ios' ? 'height' : 'padding'}
     >
-      <Header />
+      <Header darkModeSwitch={turnOnOff}/>
       <FlatList
         data={data}
         keyExtractor={(item) => item.key}
-        ListEmptyComponent={() => <Empty />}
-        renderItem={({ item }) => <Task item={item} deleteItem={deleteData} updateData={updateData} />}
+        ListEmptyComponent={() => <Empty mode={theme} />}
+        renderItem={({ item }) => <Task item={item} deleteItem={deleteData} updateData={updateData} mode={theme} />}
       />
 
       <View>
-        <Input submitHandler={createData} />
+        <Input submitHandler={createData} mode={theme} />
       </View>
-      <StatusBar style="light" />
+      <StatusBar style="auto" />
     </KeyboardAvoidingView>
   );
 }
@@ -99,7 +104,7 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#121212',
+    backgroundColor: '#444f54',
     alignItems: 'center',
     paddingVertical: 30,
   },
