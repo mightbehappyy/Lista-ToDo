@@ -6,6 +6,7 @@ import { TouchableOpacity } from 'react-native';
 export default function Input({submitHandler, mode}){
     const [value, setValue] = useState("");
     const [showWarning, setShowWarning] = useState(false);
+    const [maxValueWarning, setMaxValueWarning] = useState()
 
     useEffect(() => {
         setShowWarning(false); // esconde o aviso quando o valor "value" muda
@@ -13,7 +14,12 @@ export default function Input({submitHandler, mode}){
 
 
     const onChangeText = (text) => {
+        if (text.length <= 179){
         setValue(text);
+        setMaxValueWarning(false)
+        } else{
+            setMaxValueWarning(true)
+        }
     };
 
     const handleAddHabit = () => {
@@ -38,12 +44,16 @@ export default function Input({submitHandler, mode}){
                     value={value}
                     onChangeText={onChangeText}
                     style={styles.input}
-                    borderColor = { mode? "#034efc": "#1DA1F2"}
+                    borderColor = {mode? "#034efc": "#1DA1F2"}
                     color = {mode? "white": "black"}
+                    maxLength={180}
                 />
                 {
                 showWarning && <Text style={styles.warning}>O campo está vazio</Text>
-            }
+                }
+                {
+                maxValueWarning && <Text style={styles.warning}>Numero máximo de caractéres</Text>
+                }
                 <TouchableOpacity onPress={handlePress} style={[styles.button, {backgroundColor: mode?  "#007AFF": "#1DA1F2"}]}>
                     <Text style={styles.buttonText}>Adicionar</Text>
 
@@ -65,7 +75,8 @@ const styles = StyleSheet.create({
         borderRadius: 12,
         height: 50,
         width: 250,
-        textAlign:"center"
+        textAlign:"center",
+        marginTop: 10
     },
     button:{
         borderRadius: 25,

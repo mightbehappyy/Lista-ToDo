@@ -18,6 +18,7 @@ export default function App() {
   React.useEffect(() => {
     getData();
   }, []);
+  
 
   const createData = async (value) => {
   try {
@@ -83,7 +84,7 @@ export default function App() {
   return (
     <KeyboardAvoidingView
       style={[styles.container, {backgroundColor: theme === true ? "#131617": "#F5F5F5" }]}
-      behavior={Platform.OS === 'ios' ? 'height' : 'padding'}
+      behavior={Platform.OS === 'ios' ? 'height' : -500}
     >
       <Header darkModeSwitch={turnOnOff}/>
       <FlatList
@@ -96,7 +97,7 @@ export default function App() {
       <View>
         <Input submitHandler={createData} mode={theme} />
       </View>
-      <StatusBar style="auto" />
+      <StatusBar style={theme? "light":"dark"} />
     </KeyboardAvoidingView>
   );
 }

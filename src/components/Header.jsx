@@ -5,15 +5,27 @@ import { TouchableOpacity } from 'react-native';
 
 export default function Header({darkModeSwitch}){
     const [mode, setMode] = useState()
+    const animationRef = React.createRef();
+    
+    const playDarkMode = () => {
+        animationRef.current.play(30, 250);
+      };
+
+      const playBrightMode = () => {
+        animationRef.current.play(300, 450);
+      };
 
     const turnOnOff = () => {
         setMode(!mode)
         {
             if (mode === true)  {
                 darkModeSwitch(true)
+                playDarkMode();
              }
+
             else{
                 darkModeSwitch(false)
+                playBrightMode();
             }
         }
     }
@@ -21,10 +33,10 @@ export default function Header({darkModeSwitch}){
     return (
     <View style={styles.container}>
         <TouchableOpacity onPress={turnOnOff}>
-        <Lottie style={styles.mode} source={require('../../assets/47047-dark-mode-button.json')} autoPlay loop />
+        <Lottie style={styles.mode} ref={animationRef} loop={false} source={require('../../assets/47047-dark-mode-button.json')} />
         </TouchableOpacity>
         <View style={styles.titleContainer}>
-            <Text style={[styles.title,{color: mode === true ? "#1DA1F2": "white"}]}>Lista To do</Text>
+            <Text style={[styles.title,{color: mode? "#1DA1F2": "white"}]}>Lista To do</Text>
         </View>
         
         
